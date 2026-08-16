@@ -2,6 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import type { NavigateFn } from '../App';
 import Navbar from '../components/Navbar';
 import mssnLogo from '../imports/mssn_logo.jpg';
+import luncheonImage from '../imports/luncheon.jpeg';
+import mosqueImage from '../imports/Unilorin_Central_Mosque-1-1.jpeg';
+import hallConvoImage from '../imports/hall convo.jpeg';
+import unilorinCentralImage from '../imports/unilorin central.jpg';
 
 const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwiwnmocxxEDwlfiZ3c7SkelmfYeUtcvn38YDQCTiLHbz6VyM6hYxPK_UH7Gaxl_QRW/exec';
 
@@ -72,10 +76,10 @@ const LEVEL_OPTS = ['100L', '200L', '300L', '400L', '500L', '600L', 'Graduate Al
 const STUDENT_LEVELS = ['100L', '200L', '300L', '400L', '500L', '600L', 'Graduate Alumni'];
 
 const CAROUSEL_IMAGES = [
-  { url: 'https://images.unsplash.com/photo-1780847615151-5f6397829786?w=640&h=900&fit=crop&auto=format', caption: 'Celebrating together in faith' },
-  { url: 'https://images.unsplash.com/photo-1528862973381-9bc5ad6d4227?w=640&h=900&fit=crop&auto=format', caption: 'Grand architecture and tradition' },
-  { url: 'https://images.unsplash.com/photo-1504164996022-09080787b6b8?w=640&h=900&fit=crop&auto=format', caption: 'A community of excellence' },
-  { url: 'https://images.unsplash.com/photo-1568992688065-536aad8a12f6?w=640&h=900&fit=crop&auto=format', caption: 'Marking milestones that matter' },
+  { url: luncheonImage, caption: 'Celebrating together in faith' },
+  { url: mosqueImage, caption: 'Grand architecture and tradition' },
+  { url: hallConvoImage, caption: 'Campus life' },
+  { url: unilorinCentralImage, caption: 'Milestones celebrated' },
 ];
 
 const STEPS = ['Package', 'Meal', 'Personal Info', 'Customise', 'Alumni', 'Donation', 'Payment', 'Review'];

@@ -4,7 +4,9 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import mssnLogo from '../imports/mssn_logo.jpg';
-import eventPhoto1 from '../imports/photo_2026-08-16_07-24-22.jpg';
+import busImage from '../imports/bus image.jpg';
+import graduationImage from '../imports/graduation.jpeg';
+import hallConvoImage from '../imports/hall convo.jpeg';
 
 const PACKAGES = [
   { name: 'Barakah', price: 'Free',    priceNote: 'Attendance', items: ['Event access', 'Programme booklet'] },
@@ -23,10 +25,10 @@ const FEATURES = [
 ];
 
 const PHOTOS = [
-  { url: eventPhoto1, alt: 'Community event in traditional attire' },
-  { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Photos_from_wiki_loves_earth_ilorin_03.jpg/960px-Photos_from_wiki_loves_earth_ilorin_03.jpg', alt: 'Scenic views of Ilorin' },
-  { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/The_University_of_Ilorin_Senate_Building.jpeg/960px-The_University_of_Ilorin_Senate_Building.jpeg', alt: 'The University of Ilorin Senate Building' },
-  { url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Photos_from_wiki_loves_earth_ilorin_04.jpg/960px-Photos_from_wiki_loves_earth_ilorin_04.jpg', alt: 'Landscape around Ilorin' },
+  { url: mssnLogo, alt: 'MSSN UNILORIN logo' },
+  { url: busImage, alt: 'Bus image' },
+  { url: graduationImage, alt: 'Graduation image' },
+  { url: hallConvoImage, alt: 'Hall conversation' },
 ];
 
 const ctrlBtnStyle: CSSProperties = {
