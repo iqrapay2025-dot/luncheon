@@ -3,7 +3,7 @@ import type { NavigateFn } from '../App';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import eventPhoto1 from '../imports/photo_2026-08-16_07-24-22.jpg';
+import eventPhoto1 from '../imports/luncheon.jpeg';
 
 const GALLERY_PHOTOS = [
   { url: eventPhoto1, thumb: eventPhoto1, caption: 'Celebrating together in faith', tag: 'Event' },
