@@ -1,0 +1,10 @@
+{
+  "description": "A celebration of send-forth, achievement, and giving back — hosted by MSSN UNILORIN.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
