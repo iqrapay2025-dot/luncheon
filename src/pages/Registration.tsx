@@ -81,10 +81,11 @@ const INIT: FormData = {
 }
 
 const MEALS = [
-  "Jollof Rice & Chicken",
-  "Fried Rice & Fish",
-  "Vegetarian Combo",
-  "Tuwo Shinkafa & Egusi",
+  "Jollof Rice",
+  "Fried Rice",
+  "Ofada Rice",
+  "Pounded  Yam",
+  "Amala",
 ]
 
 const LEVEL_OPTS = [
@@ -96,8 +97,6 @@ const LEVEL_OPTS = [
   "600L",
   "Graduate Alumni",
   "Madrasah Graduand",
-  "Haflah Graduate",
-  "Other",
 ]
 const STUDENT_LEVELS = [
   "100L",
