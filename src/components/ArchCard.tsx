@@ -1,18 +1,18 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from "react"
 
 interface ArchCardProps {
-  children: ReactNode;
-  className?: string;
-  bg?: string;
-  borderColor?: string;
-  style?: CSSProperties;
+  children: ReactNode
+  className?: string
+  bg?: string
+  borderColor?: string
+  style?: CSSProperties
 }
 
 export default function ArchCard({
   children,
-  className = '',
-  bg = '#FDF8F0',
-  borderColor = '#D4A24C',
+  className = "",
+  bg = "#FDF8F0",
+  borderColor = "#D4A24C",
   style = {},
 }: ArchCardProps) {
   return (
@@ -21,7 +21,7 @@ export default function ArchCard({
       <svg
         viewBox="0 0 200 28"
         preserveAspectRatio="none"
-        style={{ width: '100%', height: 28, display: 'block' }}
+        style={{ width: "100%", height: 28, display: "block" }}
         aria-hidden="true"
       >
         {/* Fill the arch region with the card background */}
@@ -42,12 +42,12 @@ export default function ArchCard({
           borderLeft: `1.5px solid ${borderColor}`,
           borderRight: `1.5px solid ${borderColor}`,
           borderBottom: `1.5px solid ${borderColor}`,
-          borderRadius: '0 0 14px 14px',
+          borderRadius: "0 0 14px 14px",
           flexGrow: 1,
         }}
       >
         {children}
       </div>
     </div>
-  );
+  )
 }
