@@ -231,6 +231,17 @@ function TicketCard({ pkg }: { pkg: Package }) {
           <div style={{ fontSize: 10, color: "rgba(253,248,240,0.45)" }}>
             Entry Pass
           </div>
+          <div
+            style={{
+              fontSize: 16,
+              fontWeight: 800,
+              color: "#D4A24C",
+              fontFamily: "Outfit, sans-serif",
+              marginTop: 6,
+            }}
+          >
+            {formatPrice(pkg.price)}
+          </div>
         </div>
         <Barcode />
       </div>

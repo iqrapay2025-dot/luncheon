@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: "How long does payment verification take?",
-    a: "Verification typically takes up to 24 hours. You'll receive a WhatsApp notification on the number you provided once your payment is confirmed by the committee. Keep your registration reference ID for any follow-up enquiries.",
+    a: "Verification typically takes up to 24 hours. You'll receive an Email notification on the mail you provided once your payment is confirmed by the committee. Keep your registration reference ID for any follow-up enquiries.",
   },
   {
     q: "Can I change my package or meal after submitting?",
