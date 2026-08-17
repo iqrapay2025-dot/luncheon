@@ -35,6 +35,7 @@ interface FormData {
   matricNumber: string
   department: string
   faculty: string
+  isMadrasahGraduate: string // 'Yes' | 'No' | ''
   // Step 4 – Ikram customisation
   ikramWantsCustom: string // 'Yes' | 'No' | ''
   ikramCustomization: string // free-text details
@@ -67,6 +68,7 @@ const INIT: FormData = {
   matricNumber: "",
   department: "",
   faculty: "",
+  isMadrasahGraduate: "",
   ikramWantsCustom: "",
   ikramCustomization: "",
   joinAlumni: "",
@@ -96,7 +98,6 @@ const LEVEL_OPTS = [
   "500L",
   "600L",
   "Graduate Alumni",
-  "Madrasah Graduand",
 ]
 const STUDENT_LEVELS = [
   "100L",
@@ -840,6 +841,20 @@ function Step3({
       <FieldSet label="Faculty">
         {inp("faculty", "Communication & Information Sciences")}
       </FieldSet>
+      <FieldSet label="Are you a madrasah graduate?">
+        <div style={{ display: "flex", gap: 10 }}>
+          <ToggleBtn
+            label="Yes"
+            active={data.isMadrasahGraduate === "Yes"}
+            onClick={() => setData({ isMadrasahGraduate: "Yes" })}
+          />
+          <ToggleBtn
+            label="No"
+            active={data.isMadrasahGraduate === "No"}
+            onClick={() => setData({ isMadrasahGraduate: "No" })}
+          />
+        </div>
+      </FieldSet>
     </div>
   )
 }
@@ -1339,6 +1354,7 @@ function Step8({
         {row("Matric No.", data.matricNumber)}
         {row("Department", data.department)}
         {row("Faculty", data.faculty)}
+        {row("Madrasah Graduate", data.isMadrasahGraduate)}
         {pkgDisplay?.hasCustomization
           ? row(
               "Customisation",
@@ -1481,6 +1497,7 @@ export default function RegistrationPage({
         email: data.email,
         gender: data.gender,
         department: data.department,
+        madrasahGraduate: data.isMadrasahGraduate,
         level: data.level,
         matricNumber:
           data.level === "Haflah Graduate" ? "N/A" : data.matricNumber,
