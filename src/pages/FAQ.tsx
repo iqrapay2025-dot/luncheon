@@ -65,11 +65,11 @@ function AccordionItem({
       style={{
         borderRadius: 14,
         overflow: "hidden",
-        border: `1.5px solid ${open ? "#D4A24C" : "rgba(61,21,80,0.12)"}`,
+        border: `1.5px solid ${open ? "#FFC153" : "rgba(61,21,80,0.12)"}`,
         background: "#ffffff",
         transition: "border-color 0.2s, box-shadow 0.2s",
         boxShadow: open
-          ? "0 4px 20px rgba(212,162,76,0.12)"
+          ? "0 4px 20px rgba(255,193,83,0.12)"
           : "0 1px 4px rgba(61,21,80,0.04)",
       }}
     >
@@ -108,11 +108,11 @@ function AccordionItem({
             width: 28,
             height: 28,
             borderRadius: "50%",
-            border: `1.5px solid ${open ? "#D4A24C" : "rgba(61,21,80,0.2)"}`,
+            border: `1.5px solid ${open ? "#FFC153" : "rgba(61,21,80,0.2)"}`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: open ? "#D4A24C" : "#9a8272",
+            color: open ? "#FFC153" : "#9a8272",
             fontSize: 18,
             fontWeight: 300,
             transition: "all 0.2s",
@@ -127,7 +127,7 @@ function AccordionItem({
         <div
           style={{
             padding: "0 24px 24px",
-            borderTop: "1px solid rgba(212,162,76,0.2)",
+            borderTop: "1px solid rgba(255,193,83,0.2)",
           }}
         >
           <p
@@ -194,7 +194,7 @@ export default function FAQPage({ navigate }: { navigate: NavigateFn }) {
                 <path
                   d="M10,100 L10,50 Q40,10 40,10 Q70,10 70,50 L70,100 Z"
                   fill="none"
-                  stroke="#D4A24C"
+                  stroke="#FFC153"
                   strokeWidth="1"
                 />
               </pattern>
@@ -211,7 +211,7 @@ export default function FAQPage({ navigate }: { navigate: NavigateFn }) {
               fontSize: 11,
               fontWeight: 600,
               letterSpacing: "0.18em",
-              color: "#D4A24C",
+              color: "#FFC153",
               marginBottom: 12,
               fontFamily: "Manrope, sans-serif",
             }}
@@ -269,7 +269,7 @@ export default function FAQPage({ navigate }: { navigate: NavigateFn }) {
           background: "#3D1550",
           padding: "64px 24px",
           textAlign: "center",
-          borderTop: "1px solid rgba(212,162,76,0.2)",
+          borderTop: "1px solid rgba(255,193,83,0.2)",
         }}
       >
         <div className="scroll-reveal">
@@ -316,8 +316,8 @@ export default function FAQPage({ navigate }: { navigate: NavigateFn }) {
                   display: "flex",
                   alignItems: "center",
                   gap: 10,
-                  background: "rgba(212,162,76,0.1)",
-                  border: "1px solid rgba(212,162,76,0.35)",
+                  background: "rgba(255,193,83,0.1)",
+                  border: "1px solid rgba(255,193,83,0.35)",
                   borderRadius: 32,
                   padding: "12px 22px",
                   textDecoration: "none",
@@ -325,10 +325,10 @@ export default function FAQPage({ navigate }: { navigate: NavigateFn }) {
                   minHeight: 44,
                 }}
                 onMouseOver={(e) =>
-                  (e.currentTarget.style.background = "rgba(212,162,76,0.2)")
+                  (e.currentTarget.style.background = "rgba(255,193,83,0.2)")
                 }
                 onMouseOut={(e) =>
-                  (e.currentTarget.style.background = "rgba(212,162,76,0.1)")
+                  (e.currentTarget.style.background = "rgba(255,193,83,0.1)")
                 }
               >
                 <svg
@@ -336,7 +336,7 @@ export default function FAQPage({ navigate }: { navigate: NavigateFn }) {
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#D4A24C"
+                  stroke="#FFC153"
                   strokeWidth="2"
                   aria-hidden="true"
                 >
@@ -371,7 +371,7 @@ export default function FAQPage({ navigate }: { navigate: NavigateFn }) {
           <button
             onClick={() => navigate("register")}
             style={{
-              background: "#D4A24C",
+              background: "#FFC153",
               border: "none",
               borderRadius: 28,
               padding: "13px 32px",
@@ -384,7 +384,7 @@ export default function FAQPage({ navigate }: { navigate: NavigateFn }) {
               transition: "background 0.2s",
             }}
             onMouseOver={(e) => (e.currentTarget.style.background = "#E8C784")}
-            onMouseOut={(e) => (e.currentTarget.style.background = "#D4A24C")}
+            onMouseOut={(e) => (e.currentTarget.style.background = "#FFC153")}
           >
             Ready to Register?
           </button>

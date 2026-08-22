@@ -165,7 +165,7 @@ function Lightbox({
             <div
               style={{
                 fontSize: 11,
-                color: "#D4A24C",
+                color: "#FFC153",
                 marginTop: 3,
                 fontFamily: "Manrope, sans-serif",
               }}
@@ -289,6 +289,8 @@ function HeroCarousel() {
           key={i}
           src={p.url}
           alt={p.caption}
+          loading={i === 0 ? "eager" : "lazy"}
+          decoding="async"
           style={{
             position: "absolute",
             inset: 0,
@@ -405,7 +407,7 @@ function HeroCarousel() {
           style={{
             fontSize: 10,
             fontWeight: 600,
-            color: "#D4A24C",
+            color: "#FFC153",
             letterSpacing: "0.1em",
             marginBottom: 4,
             fontFamily: "Manrope, sans-serif",
@@ -434,7 +436,7 @@ function HeroCarousel() {
                 width: i === idx ? 24 : 7,
                 height: 7,
                 borderRadius: 4,
-                background: i === idx ? "#D4A24C" : "rgba(255,255,255,0.35)",
+                background: i === idx ? "#FFC153" : "rgba(255,255,255,0.35)",
                 border: "none",
                 cursor: "pointer",
                 transition: "all 0.35s",
@@ -606,7 +608,7 @@ export default function GalleryPage({ navigate }: { navigate: NavigateFn }) {
                 <path
                   d="M10,100 L10,50 Q40,10 40,10 Q70,10 70,50 L70,100 Z"
                   fill="none"
-                  stroke="#D4A24C"
+                  stroke="#FFC153"
                   strokeWidth="1"
                 />
               </pattern>
@@ -630,7 +632,7 @@ export default function GalleryPage({ navigate }: { navigate: NavigateFn }) {
               style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: "#D4A24C",
+                color: "#FFC153",
                 letterSpacing: "0.14em",
                 fontFamily: "Manrope, sans-serif",
               }}
@@ -666,7 +668,7 @@ export default function GalleryPage({ navigate }: { navigate: NavigateFn }) {
             snapshots from our journey together.
           </p>
           {/* Coming soon badge */}
-          {/* <div className="animate-fade-up stagger-3" style={{ maxWidth: 560, background: 'rgba(212,162,76,0.1)', border: '1px dashed rgba(212,162,76,0.45)', borderRadius: 18, padding: '34px 24px', textAlign: 'center' }}>
+          {/* <div className="animate-fade-up stagger-3" style={{ maxWidth: 560, background: 'rgba(255,193,83,0.1)', border: '1px dashed rgba(255,193,83,0.45)', borderRadius: 18, padding: '34px 24px', textAlign: 'center' }}>
             <div style={{ fontFamily: 'Outfit, sans-serif', fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 800, color: '#FDF8F0', letterSpacing: '-0.01em', marginBottom: 8 }}>
               Coming Soon
             </div>
@@ -696,7 +698,7 @@ export default function GalleryPage({ navigate }: { navigate: NavigateFn }) {
               fontFamily: "Outfit, sans-serif",
               fontSize: 11,
               fontWeight: 600,
-              color: "#D4A24C",
+              color: "#FFC153",
               letterSpacing: "0.14em",
               marginBottom: 10,
             }}
@@ -747,7 +749,7 @@ export default function GalleryPage({ navigate }: { navigate: NavigateFn }) {
             style={{
               fontSize: 11,
               fontWeight: 600,
-              color: "#D4A24C",
+              color: "#FFC153",
               letterSpacing: "0.14em",
               marginBottom: 10,
               fontFamily: "Manrope, sans-serif",
@@ -790,7 +792,7 @@ export default function GalleryPage({ navigate }: { navigate: NavigateFn }) {
             <button
               onClick={() => navigate("register")}
               style={{
-                background: "#D4A24C",
+                background: "#FFC153",
                 color: "#3D1550",
                 border: "none",
                 borderRadius: 28,
@@ -805,7 +807,7 @@ export default function GalleryPage({ navigate }: { navigate: NavigateFn }) {
               onMouseOver={(e) =>
                 (e.currentTarget.style.background = "#E8C784")
               }
-              onMouseOut={(e) => (e.currentTarget.style.background = "#D4A24C")}
+              onMouseOut={(e) => (e.currentTarget.style.background = "#FFC153")}
             >
               Register Now →
             </button>
@@ -825,7 +827,7 @@ export default function GalleryPage({ navigate }: { navigate: NavigateFn }) {
                 transition: "all 0.2s",
               }}
               onMouseOver={(e) =>
-                (e.currentTarget.style.borderColor = "#D4A24C")
+                (e.currentTarget.style.borderColor = "#FFC153")
               }
               onMouseOut={(e) =>
                 (e.currentTarget.style.borderColor = "rgba(253,248,240,0.25)")

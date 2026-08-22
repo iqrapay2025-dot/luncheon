@@ -34,7 +34,7 @@ export default function Navbar({ navigate }: { navigate: NavigateFn }) {
           zIndex: 100,
           background: scrolled ? "#3D1550" : "rgba(255,255,255,0.96)",
           borderBottom: `1px solid ${
-            scrolled ? "rgba(212,162,76,0.2)" : "rgba(26,26,46,0.08)"
+            scrolled ? "rgba(255,193,83,0.2)" : "rgba(26,26,46,0.08)"
           }`,
           boxShadow: scrolled
             ? "0 2px 24px rgba(0,0,0,0.35)"
@@ -88,7 +88,7 @@ export default function Navbar({ navigate }: { navigate: NavigateFn }) {
                   fontFamily: "Outfit, sans-serif",
                   fontWeight: 700,
                   fontSize: 14,
-                  color: scrolled ? "#D4A24C" : "#3D1550",
+                  color: scrolled ? "#FFC153" : "#3D1550",
                   lineHeight: 1.1,
                   letterSpacing: "0.03em",
                   transition: "color 0.35s",
@@ -100,7 +100,7 @@ export default function Navbar({ navigate }: { navigate: NavigateFn }) {
                 style={{
                   fontSize: 9,
                   letterSpacing: "0.12em",
-                  color: "#D4A24C",
+                  color: "#FFC153",
                   fontWeight: 500,
                 }}
               >
@@ -147,7 +147,7 @@ export default function Navbar({ navigate }: { navigate: NavigateFn }) {
             style={{
               background: scrolled ? "#FFFFFF" : "#3D1550",
               color: scrolled ? "#3D1550" : "#FDF8F0",
-              border: scrolled ? "1px solid rgba(212,162,76,0.45)" : "none",
+              border: scrolled ? "1px solid rgba(255,193,83,0.45)" : "none",
               borderRadius: 24,
               padding: "9px 22px",
               fontWeight: 600,
@@ -199,7 +199,7 @@ export default function Navbar({ navigate }: { navigate: NavigateFn }) {
                   display: "block",
                   width: 22,
                   height: 2,
-                  background: scrolled ? "#D4A24C" : "#3D1550",
+                  background: scrolled ? "#FFC153" : "#3D1550",
                   borderRadius: 2,
                   transition: "transform 0.2s, opacity 0.2s",
                   transform:
@@ -220,7 +220,7 @@ export default function Navbar({ navigate }: { navigate: NavigateFn }) {
             style={{
               background: scrolled ? "#3D1550" : "#ffffff",
               borderTop: `1px solid ${
-                scrolled ? "rgba(212,162,76,0.2)" : "rgba(26,26,46,0.08)"
+                scrolled ? "rgba(255,193,83,0.2)" : "rgba(26,26,46,0.08)"
               }`,
               padding: "16px 24px 24px",
               display: "flex",
@@ -263,7 +263,7 @@ export default function Navbar({ navigate }: { navigate: NavigateFn }) {
                 marginTop: 12,
                 background: scrolled ? "#FFFFFF" : "#3D1550",
                 color: scrolled ? "#3D1550" : "#FDF8F0",
-                border: scrolled ? "1px solid rgba(212,162,76,0.4)" : "none",
+                border: scrolled ? "1px solid rgba(255,193,83,0.4)" : "none",
                 borderRadius: 24,
                 padding: "12px 24px",
                 fontWeight: 600,

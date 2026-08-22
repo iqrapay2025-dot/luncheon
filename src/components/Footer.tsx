@@ -5,7 +5,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
     <footer
       style={{
         background: "#0F0A18",
-        borderTop: "1px solid rgba(212,162,76,0.2)",
+        borderTop: "1px solid rgba(255,193,83,0.2)",
       }}
     >
       <div
@@ -25,7 +25,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
               style={{
                 fontFamily: "Outfit, sans-serif",
                 fontWeight: 700,
-                color: "#D4A24C",
+                color: "#FFC153",
                 fontSize: 18,
                 marginBottom: 6,
               }}
@@ -59,7 +59,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
           <div>
             <div
               style={{
-                color: "#D4A24C",
+                color: "#FFC153",
                 fontWeight: 600,
                 fontSize: 12,
                 letterSpacing: "0.1em",
@@ -87,7 +87,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
                     textAlign: "left",
                     transition: "color 0.2s",
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.color = "#D4A24C")}
+                  onMouseOver={(e) => (e.currentTarget.style.color = "#FFC153")}
                   onMouseOut={(e) =>
                     (e.currentTarget.style.color = "rgba(253,248,240,0.7)")
                   }
@@ -102,7 +102,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
           <div>
             <div
               style={{
-                color: "#D4A24C",
+                color: "#FFC153",
                 fontWeight: 600,
                 fontSize: 12,
                 letterSpacing: "0.1em",
@@ -142,7 +142,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
           <div>
             <div
               style={{
-                color: "#D4A24C",
+                color: "#FFC153",
                 fontWeight: 600,
                 fontSize: 12,
                 letterSpacing: "0.1em",
@@ -234,24 +234,24 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
                   rel="noopener noreferrer"
                   aria-label={label}
                   style={{
-                    color: "#D4A24C",
+                    color: "#FFC153",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     width: 36,
                     height: 36,
                     borderRadius: "50%",
-                    border: "1px solid rgba(212,162,76,0.3)",
+                    border: "1px solid rgba(255,193,83,0.3)",
                     transition: "background 0.2s, border-color 0.2s",
                     textDecoration: "none",
                   }}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.background = "rgba(212,162,76,0.15)"
-                    e.currentTarget.style.borderColor = "#D4A24C"
+                    e.currentTarget.style.background = "rgba(255,193,83,0.15)"
+                    e.currentTarget.style.borderColor = "#FFC153"
                   }}
                   onMouseOut={(e) => {
                     e.currentTarget.style.background = "transparent"
-                    e.currentTarget.style.borderColor = "rgba(212,162,76,0.3)"
+                    e.currentTarget.style.borderColor = "rgba(255,193,83,0.3)"
                   }}
                 >
                   {icon}
@@ -278,7 +278,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
         {/* Bottom bar */}
         <div
           style={{
-            borderTop: "1px solid rgba(212,162,76,0.15)",
+            borderTop: "1px solid rgba(255,193,83,0.15)",
             paddingTop: 24,
             display: "flex",
             justifyContent: "space-between",
@@ -287,7 +287,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
             gap: 12,
           }}
         >
-          <div style={{ color: "rgba(212,162,76,0.5)", fontSize: 12 }}>
+          <div style={{ color: "rgba(255,193,83,0.5)", fontSize: 12 }}>
             © 2026 MSSN UNILORIN. All rights reserved.
           </div>
           <button
@@ -301,7 +301,7 @@ export default function Footer({ navigate }: { navigate: NavigateFn }) {
               padding: 0,
               transition: "color 0.2s",
             }}
-            onMouseOver={(e) => (e.currentTarget.style.color = "#D4A24C")}
+            onMouseOver={(e) => (e.currentTarget.style.color = "#FFC153")}
             onMouseOut={(e) =>
               (e.currentTarget.style.color = "rgba(253,248,240,0.45)")
             }

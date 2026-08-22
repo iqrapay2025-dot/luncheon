@@ -12,7 +12,7 @@ export default function ArchCard({
   children,
   className = "",
   bg = "#FDF8F0",
-  borderColor = "#D4A24C",
+  borderColor = "#FFC153",
   style = {},
 }: ArchCardProps) {
   return (

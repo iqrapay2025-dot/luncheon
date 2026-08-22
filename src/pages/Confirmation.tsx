@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import type { NavigateFn } from "../App"
-import { getAmountDisplay } from "../data/packages"
-import mssnLogo from "../imports/mssn_logo.jpg"
+import TicketPreview from "../components/TicketPreview"
+import { getAmountDisplay, getPackageByName } from "../data/packages"
 
 interface ConfirmData {
   fullName: string
@@ -10,249 +10,6 @@ interface ConfirmData {
   meal: string
   referenceId: string
   amount?: string
-}
-
-// Simple QR code placeholder SVG
-function QRPlaceholder({ value }: { value: string }) {
-  const cells: boolean[][] = []
-  for (let r = 0; r < 21; r++) {
-    cells[r] = []
-    for (let c = 0; c < 21; c++) {
-      const hash =
-        (value.charCodeAt((r * 21 + c) % value.length) + r * 7 + c * 13) % 3
-      cells[r][c] = hash !== 0
-    }
-  }
-  const finder = (row: number, col: number) => {
-    const onBorder = (r: number, c: number, size: number) =>
-      r === 0 || r === size - 1 || c === 0 || c === size - 1
-    const inBox = (r: number, c: number, size: number) =>
-      r >= 0 && r < size && c >= 0 && c < size
-    if (inBox(row, col, 7))
-      return (
-        onBorder(row, col, 7) || (row >= 2 && row <= 4 && col >= 2 && col <= 4)
-      )
-    if (inBox(row, col - 14, 7))
-      return (
-        onBorder(row, col - 14, 7) ||
-        (row >= 2 && row <= 4 && col - 14 >= 2 && col - 14 <= 4)
-      )
-    if (inBox(row - 14, col, 7))
-      return (
-        onBorder(row - 14, col, 7) ||
-        (row - 14 >= 2 && row - 14 <= 4 && col >= 2 && col <= 4)
-      )
-    return null
-  }
-  const size = 21
-  const cell = 8
-  return (
-    <svg
-      width={size * cell}
-      height={size * cell}
-      viewBox={`0 0 ${size * cell} ${size * cell}`}
-      style={{ display: "block" }}
-    >
-      <rect width={size * cell} height={size * cell} fill="white" />
-      {cells.map((row, r) =>
-        row.map((filled, c) => {
-          const forced = finder(r, c)
-          const dark = forced !== null ? forced : filled
-          return dark ? (
-            <rect
-              key={`${r}-${c}`}
-              x={c * cell}
-              y={r * cell}
-              width={cell}
-              height={cell}
-              fill="#1A1A2E"
-            />
-          ) : null
-        }),
-      )}
-    </svg>
-  )
-}
-
-// Ticket preview card — receives a ref for html2canvas capture
-function TicketPreview({
-  d,
-  innerRef,
-}: {
-  d: ConfirmData
-  innerRef: React.RefObject<HTMLDivElement | null>
-}) {
-  const amountDisplay = getAmountDisplay(d.amount, d.package)
-
-  return (
-    <div
-      ref={innerRef}
-      style={{
-        background: "#ffffff",
-        borderRadius: 16,
-        overflow: "hidden",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
-        maxWidth: 340,
-        margin: "0 auto",
-        border: "1px solid rgba(212,162,76,0.2)",
-      }}
-    >
-      {/* Purple header */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #3D1550 0%, #5B2C74 100%)",
-          padding: "18px 20px 16px",
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-        }}
-      >
-        <img
-          src={mssnLogo}
-          alt="MSSN logo"
-          style={{
-            width: 36,
-            height: 36,
-            objectFit: "contain",
-            borderRadius: 4,
-            filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.4))",
-          }}
-          crossOrigin="anonymous"
-        />
-        <div>
-          <div
-            style={{
-              fontFamily: "Outfit, sans-serif",
-              fontSize: 11,
-              fontWeight: 700,
-              color: "#D4A24C",
-              letterSpacing: "0.08em",
-            }}
-          >
-            MSSN UNILORIN
-          </div>
-          <div
-            style={{
-              fontFamily: "Manrope, sans-serif",
-              fontSize: 10,
-              color: "rgba(253,248,240,0.65)",
-              marginTop: 1,
-            }}
-          >
-            The First Grand Luncheon
-          </div>
-        </div>
-      </div>
-
-      {/* QR section */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          padding: "20px 20px 12px",
-          background: "#FAFAFA",
-        }}
-      >
-        <div
-          style={{
-            borderRadius: 8,
-            overflow: "hidden",
-            border: "1px solid rgba(0,0,0,0.08)",
-            padding: 8,
-            background: "#fff",
-          }}
-        >
-          <QRPlaceholder value={d.referenceId} />
-        </div>
-      </div>
-      <div
-        style={{
-          textAlign: "center",
-          fontSize: 10,
-          color: "#9CA3AF",
-          fontFamily: "Manrope, sans-serif",
-          marginBottom: 14,
-        }}
-      >
-        Scan at check-in
-      </div>
-
-      {/* Details table */}
-      <div style={{ padding: "0 20px 16px", background: "#FAFAFA" }}>
-        {[
-          { label: "Reference ID", value: d.referenceId, mono: true },
-          { label: "Name", value: d.fullName || "—" },
-          { label: "Package", value: d.package || "—" },
-          { label: "Amount", value: amountDisplay },
-          { label: "Meal", value: d.meal || "—" },
-        ].map(({ label, value, mono }) => (
-          <div
-            key={label}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "7px 0",
-              borderBottom: "1px solid rgba(0,0,0,0.06)",
-              gap: 12,
-              alignItems: "center",
-            }}
-          >
-            <span
-              style={{
-                fontSize: 11,
-                color: "#9CA3AF",
-                fontFamily: "Manrope, sans-serif",
-              }}
-            >
-              {label}
-            </span>
-            <span
-              style={{
-                fontSize: mono ? 13 : 12,
-                color: "#1A1A2E",
-                fontWeight: mono ? 700 : 500,
-                fontFamily: mono
-                  ? "'Courier New', monospace"
-                  : "Manrope, sans-serif",
-                letterSpacing: mono ? "0.05em" : "0",
-                textAlign: "right",
-              }}
-            >
-              {value}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* Dashed perforation */}
-      <div
-        style={{
-          borderTop: "2px dashed rgba(61,21,80,0.15)",
-          margin: "0 12px",
-        }}
-      />
-
-      {/* Footer */}
-      <div
-        style={{
-          background: "#ffffff",
-          padding: "12px 20px",
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 10,
-            color: "#9CA3AF",
-            fontFamily: "Manrope, sans-serif",
-            letterSpacing: "0.06em",
-          }}
-        >
-          PRESENT THIS AT THE EVENT FOR CHECK-IN
-        </div>
-      </div>
-    </div>
-  )
 }
 
 const CheckArch = ({ animate }: { animate: boolean }) => (
@@ -272,8 +29,8 @@ const CheckArch = ({ animate }: { animate: boolean }) => (
     >
       <path
         d="M10,160 L10,80 Q10,10 60,5 Q110,10 110,80 L110,160 Z"
-        fill="rgba(212,162,76,0.12)"
-        stroke="#D4A24C"
+        fill="rgba(255,193,83,0.12)"
+        stroke="#FFC153"
         strokeWidth="1.5"
         style={
           animate
@@ -295,7 +52,7 @@ const CheckArch = ({ animate }: { animate: boolean }) => (
         width: 56,
         height: 56,
         borderRadius: "50%",
-        background: "#D4A24C",
+        background: "#FFC153",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -324,8 +81,6 @@ export default function ConfirmationPage({
   data: unknown
 }) {
   const [animate, setAnimate] = useState(false)
-  const [downloading, setDownloading] = useState(false)
-  const ticketRef = useRef<HTMLDivElement>(null)
 
   const d = data as ConfirmData || {
     fullName: "",
@@ -343,6 +98,11 @@ export default function ConfirmationPage({
 
   const amountDisplay = getAmountDisplay(d.amount, d.package)
 
+  const ticketAmount =
+    d.amount && Number(d.amount) > 0
+      ? Number(d.amount).toLocaleString()
+      : (getPackageByName(d.package)?.price.toLocaleString() ?? "")
+
   const summary = [
     { label: "Reference ID", value: d.referenceId, mono: true },
     { label: "Name", value: d.fullName },
@@ -357,30 +117,7 @@ export default function ConfirmationPage({
 
   const hasEmail = !!(d.email && d.email.trim())
 
-  const handleDownload = async () => {
-    if (!ticketRef.current) return
-    setDownloading(true)
-    try {
-      const html2canvas = (await import("html2canvas")).default
-      const canvas = await html2canvas(ticketRef.current, {
-        useCORS: true,
-        scale: 2,
-        backgroundColor: "#ffffff",
-        logging: false,
-      })
-      const url = canvas.toDataURL("image/png")
-      const a = document.createElement("a")
-      a.href = url
-      a.download = `MSSN-Ticket-${d.referenceId}.png`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-    } catch (err) {
-      console.error("Download failed:", err)
-    } finally {
-      setDownloading(false)
-    }
-  }
+  // Ticket download is handled inside <TicketPreview />.
 
   return (
     <div
@@ -416,7 +153,7 @@ export default function ConfirmationPage({
               <path
                 d="M10,100 L10,50 Q40,10 40,10 Q70,10 70,50 L70,100 Z"
                 fill="none"
-                stroke="#D4A24C"
+                stroke="#FFC153"
                 strokeWidth="1"
               />
             </pattern>
@@ -455,7 +192,7 @@ export default function ConfirmationPage({
           <p
             style={{
               fontSize: 15,
-              color: "#D4A24C",
+              color: "#FFC153",
               fontWeight: 600,
               marginBottom: 32,
               letterSpacing: "0.03em",
@@ -489,7 +226,7 @@ export default function ConfirmationPage({
               <path
                 d="M0,28 C0,28 180,28 240,4 C300,28 480,28 480,28"
                 fill="none"
-                stroke="#D4A24C"
+                stroke="#FFC153"
                 strokeWidth="1.5"
                 vectorEffect="non-scaling-stroke"
               />
@@ -532,8 +269,8 @@ export default function ConfirmationPage({
           {/* Email ticket message */}
           <div
             style={{
-              background: "rgba(212,162,76,0.1)",
-              border: "1px solid rgba(212,162,76,0.3)",
+              background: "rgba(255,193,83,0.1)",
+              border: "1px solid rgba(255,193,83,0.3)",
               borderRadius: 12,
               padding: "14px 18px",
               display: "flex",
@@ -550,7 +287,7 @@ export default function ConfirmationPage({
               height="20"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#D4A24C"
+              stroke="#FFC153"
               strokeWidth="1.8"
               style={{ flexShrink: 0, marginTop: 1 }}
               aria-hidden="true"
@@ -612,7 +349,7 @@ export default function ConfirmationPage({
                 transition: "border-color 0.2s",
               }}
               onMouseOver={(e) =>
-                (e.currentTarget.style.borderColor = "#D4A24C")
+                (e.currentTarget.style.borderColor = "#FFC153")
               }
               onMouseOut={(e) =>
                 (e.currentTarget.style.borderColor = "rgba(253,248,240,0.5)")
@@ -668,7 +405,7 @@ export default function ConfirmationPage({
               transition: "color 0.2s",
               fontFamily: "Manrope, sans-serif",
             }}
-            onMouseOver={(e) => (e.currentTarget.style.color = "#D4A24C")}
+            onMouseOver={(e) => (e.currentTarget.style.color = "#FFC153")}
             onMouseOut={(e) =>
               (e.currentTarget.style.color = "rgba(253,248,240,0.45)")
             }
@@ -684,7 +421,7 @@ export default function ConfirmationPage({
               style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: "rgba(212,162,76,0.7)",
+                color: "rgba(255,193,83,0.7)",
                 letterSpacing: "0.12em",
                 fontFamily: "Manrope, sans-serif",
               }}
@@ -692,94 +429,13 @@ export default function ConfirmationPage({
               YOUR TICKET PREVIEW
             </div>
           </div>
-          <TicketPreview d={d} innerRef={ticketRef} />
-
-          {/* Download button */}
-          <div style={{ textAlign: "center", marginTop: 18 }}>
-            <button
-              onClick={handleDownload}
-              disabled={downloading}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                background: downloading ? "rgba(212,162,76,0.4)" : "#D4A24C",
-                border: "none",
-                borderRadius: 28,
-                padding: "12px 28px",
-                color: "#3D1550",
-                fontWeight: 700,
-                fontSize: 14,
-                cursor: downloading ? "not-allowed" : "pointer",
-                minHeight: 48,
-                fontFamily: "Manrope, sans-serif",
-                transition: "background 0.2s",
-              }}
-              onMouseOver={(e) => {
-                if (!downloading) e.currentTarget.style.background = "#E8C784"
-              }}
-              onMouseOut={(e) => {
-                if (!downloading) e.currentTarget.style.background = "#D4A24C"
-              }}
-            >
-              {downloading ? (
-                <>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    style={{ animation: "spin 0.8s linear infinite" }}
-                    aria-hidden="true"
-                  >
-                    <circle
-                      cx="8"
-                      cy="8"
-                      r="6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeDasharray="30"
-                      strokeDashoffset="10"
-                      fill="none"
-                    />
-                  </svg>
-                  Generating…
-                </>
-              ) : (
-                <>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7 10 12 15 17 10" />
-                    <line x1="12" y1="15" x2="12" y2="3" />
-                  </svg>
-                  Download Ticket
-                </>
-              )}
-            </button>
-          </div>
-
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: 12,
-              color: "rgba(253,248,240,0.35)",
-              marginTop: 14,
-              fontFamily: "Manrope, sans-serif",
-              lineHeight: 1.5,
-            }}
-          >
-            Screenshot or download this ticket. The QR code will be live in your
-            emailed ticket.
-          </p>
+          <TicketPreview
+            referenceId={d.referenceId}
+            fullName={d.fullName}
+            package={d.package}
+            meal={d.meal}
+            amount={ticketAmount}
+          />
         </div>
       </div>
     </div>

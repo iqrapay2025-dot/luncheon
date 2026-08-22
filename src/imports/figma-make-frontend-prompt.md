@@ -17,7 +17,7 @@ Build 4 pages: **Landing Page**, **Registration Form** (multi-step, 8 sections),
 ### Color Palette
 - `--purple-deep`: #3D1550 — primary brand color, hero backgrounds, headers
 - `--purple-royal`: #5B2C74 — gradient partner to purple-deep, hover states
-- `--gold`: #D4A24C — accents, borders, CTAs, icons, dividers
+- `--gold`: #FFC153 — accents, borders, CTAs, icons, dividers
 - `--gold-light`: #E8C784 — hover states on gold elements, subtle highlights
 - `--cream`: #F5EDE0 — main light background for form/content sections
 - `--off-white`: #FDF8F0 — cards on cream background, text on dark backgrounds

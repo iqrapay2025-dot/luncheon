@@ -1,27 +1,12 @@
 import { useState, useEffect, useRef, type CSSProperties } from "react"
 import type { NavigateFn } from "../App"
-import Navbar from "../components/Navbar"
+import HeroSection from "../components/HeroSection"
 import Footer from "../components/Footer"
 import { useScrollReveal } from "../hooks/useScrollReveal"
-import {
-  PACKAGES,
-  formatPrice,
-  getTierLabel,
-  type Package,
-} from "../data/packages"
 import mssnLogo from "../imports/mssn_logo.jpg"
 import busImage from "../imports/bus image.jpg"
 import graduationImage from "../imports/graduation.jpeg"
 import hallConvoImage from "../imports/hall convo.jpeg"
-
-const FEATURES = [
-  "Send-forth for Graduating Students",
-  "Awards & Certificate Presentation",
-  "Haflah for Madrasah Graduands",
-  "Launch of MSSN Alumni Association",
-  "MSSN Bus Donation Drive",
-  "New Executive Council Introduction",
-]
 
 const PHOTOS = [
   { url: mssnLogo, alt: "MSSN UNILORIN logo" },
@@ -35,7 +20,7 @@ const ctrlBtnStyle: CSSProperties = {
   height: 34,
   borderRadius: "50%",
   background: "rgba(255,255,255,0.06)",
-  border: "1px solid rgba(212,162,76,0.35)",
+  border: "1px solid rgba(255,193,83,0.35)",
   color: "#E8C784",
   display: "flex",
   alignItems: "center",
@@ -44,209 +29,6 @@ const ctrlBtnStyle: CSSProperties = {
   transition: "background 0.2s",
   fontFamily: "Manrope, sans-serif",
   padding: 0,
-}
-
-function Barcode() {
-  const ws = [
-    3, 1, 2, 3, 1, 1, 2, 3, 1, 2, 1, 3, 2, 1, 3, 1, 2, 1, 2, 3, 1, 2, 3, 1, 1,
-    2, 3, 1, 2, 1,
-  ]
-  let x = 0
-  const rects = ws.map((w, i) => {
-    const el = (
-      <rect
-        key={i}
-        x={x}
-        y={0}
-        width={w}
-        height={26}
-        fill="rgba(212,162,76,0.75)"
-        rx={0.4}
-      />
-    )
-    x += w + 1
-    return el
-  })
-  return (
-    <svg
-      width="110"
-      height="26"
-      viewBox={`0 0 ${x} 26`}
-      preserveAspectRatio="none"
-    >
-      {rects}
-    </svg>
-  )
-}
-
-function TicketCard({ pkg }: { pkg: Package }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        borderRadius: 18,
-        overflow: "visible",
-        background: "#12062a",
-        boxShadow: "0 12px 48px rgba(61,21,80,0.3)",
-        height: 180,
-        position: "relative",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          right: "calc(35% - 11px)",
-          top: -11,
-          width: 22,
-          height: 22,
-          borderRadius: "50%",
-          background: "#ffffff",
-          zIndex: 5,
-        }}
-        aria-hidden="true"
-      />
-      <div
-        style={{
-          position: "absolute",
-          right: "calc(35% - 11px)",
-          bottom: -11,
-          width: 22,
-          height: 22,
-          borderRadius: "50%",
-          background: "#ffffff",
-          zIndex: 5,
-        }}
-        aria-hidden="true"
-      />
-      {/* Left section */}
-      <div
-        style={{
-          flex: 1,
-          padding: "16px 20px 14px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          minWidth: 0,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <img
-            src={mssnLogo}
-            alt="MSSN"
-            style={{
-              width: 26,
-              height: 26,
-              objectFit: "contain",
-              borderRadius: 3,
-              filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.5))",
-            }}
-          />
-          <div>
-            <div
-              style={{
-                fontSize: 9,
-                fontWeight: 700,
-                color: "#D4A24C",
-                letterSpacing: "0.1em",
-                fontFamily: "Outfit, sans-serif",
-              }}
-            >
-              MSSN UNILORIN
-            </div>
-            <div style={{ fontSize: 7, color: "rgba(212,162,76,0.45)" }}>
-              GRAND LUNCHEON 2026
-            </div>
-          </div>
-        </div>
-        <div
-          style={{
-            fontFamily: "Outfit, sans-serif",
-            fontSize: "clamp(32px, 5vw, 58px)",
-            fontWeight: 800,
-            lineHeight: 0.92,
-            letterSpacing: "-0.02em",
-            background:
-              "linear-gradient(130deg,#D4A24C 0%,#E8C784 35%,#f0d080 55%,#D4A24C 80%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          {pkg.name}
-        </div>
-      </div>
-      <div
-        style={{
-          width: 0,
-          borderLeft: "2px dashed rgba(212,162,76,0.3)",
-          flexShrink: 0,
-        }}
-        aria-hidden="true"
-      />
-      {/* Right stub */}
-      <div
-        style={{
-          width: 160,
-          flexShrink: 0,
-          padding: "14px 16px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
-          <div
-            style={{
-              fontSize: 9,
-              fontWeight: 700,
-              color: "#D4A24C",
-              letterSpacing: "0.08em",
-              fontFamily: "Outfit, sans-serif",
-            }}
-          >
-            MSSN 2026
-          </div>
-          <div
-            style={{
-              fontSize: 7,
-              color: "rgba(253,248,240,0.3)",
-              marginTop: 2,
-            }}
-          >
-            University of Ilorin
-          </div>
-        </div>
-        <div>
-          <div
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: "#FDF8F0",
-              marginBottom: 2,
-              fontFamily: "Manrope, sans-serif",
-            }}
-          >
-            {pkg.name}
-          </div>
-          <div style={{ fontSize: 10, color: "rgba(253,248,240,0.45)" }}>
-            Entry Pass
-          </div>
-          <div
-            style={{
-              fontSize: 16,
-              fontWeight: 800,
-              color: "#D4A24C",
-              fontFamily: "Outfit, sans-serif",
-              marginTop: 6,
-            }}
-          >
-            {formatPrice(pkg.price)}
-          </div>
-        </div>
-        <Barcode />
-      </div>
-    </div>
-  )
 }
 
 function DecorativeGraphic() {
@@ -265,7 +47,7 @@ function DecorativeGraphic() {
         fill="none"
         style={{ width: "100%", height: "100%" }}
       >
-        <circle cx="265" cy="148" r="132" fill="#D4A24C" />
+        <circle cx="265" cy="148" r="132" fill="#FFC153" />
         <circle cx="158" cy="218" r="96" fill="#E8762A" />
         <circle cx="318" cy="268" r="75" fill="#6B21A8" />
         <path
@@ -284,8 +66,6 @@ function DecorativeGraphic() {
 }
 
 export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
-  const [selectedIdx, setSelectedIdx] = useState(1)
-  const pkg = PACKAGES[selectedIdx]
   useScrollReveal([])
 
   // ── Dignified speaker audio player ──
@@ -368,19 +148,12 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
       }}
     >
       <style>{`
-        /* ── Countdown bar ── */
-        .cb-text { display: inline; }
-        /* ── Hero two-col ── */
-        .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: flex-start; }
-        .hero-price-col { width: 220px; flex-shrink: 0; }
-        /* ── Feature grid ── */
-        .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 20px; margin-top: 24px; }
         /* ── About card header ── */
         .about-header { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 48px 52px 0; }
         .about-deco { width: 340px; flex-shrink: 0; margin-right: -12px; }
         /* ── About strip ── */
-        .about-strip { display: grid; grid-template-columns: repeat(3, 1fr); padding: 0 52px 44px; border-top: 1px solid rgba(212,162,76,0.12); margin-top: 32px; }
-        .about-strip-cell { padding: 24px 28px 0; border-left: 1px solid rgba(212,162,76,0.12); }
+        .about-strip { display: grid; grid-template-columns: repeat(3, 1fr); padding: 0 52px 44px; border-top: 1px solid rgba(255,193,83,0.12); margin-top: 32px; }
+        .about-strip-cell { padding: 24px 28px 0; border-left: 1px solid rgba(255,193,83,0.12); }
         .about-strip-cell:first-child { border-left: none; }
         /* ── Gallery section ── */
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
@@ -392,515 +165,22 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
           .about-deco { display: none; }
           .about-header { grid-template-columns: 1fr; }
           .about-strip { grid-template-columns: 1fr; padding: 0 24px 32px; }
-          .about-strip-cell { border-left: none; border-top: 1px solid rgba(212,162,76,0.12); padding: 20px 0 0; }
+          .about-strip-cell { border-left: none; border-top: 1px solid rgba(255,193,83,0.12); padding: 20px 0 0; }
           .about-strip-cell:first-child { border-top: none; padding-top: 20px; }
           .gallery-grid { grid-template-columns: 1fr; gap: 32px; }
         }
 
         @media (max-width: 700px) {
-          .hero-grid { grid-template-columns: 1fr; gap: 0; }
-          .hero-price-col { display: none; }
-          .feature-grid { grid-template-columns: repeat(2, 1fr); gap: 10px 16px; }
           .about-header { padding: 28px 20px 0; }
-          .hero-section-inner { padding: 28px 20px 40px; }
-          .cb-text { display: none; }
         }
 
         @media (max-width: 480px) {
-          .feature-grid { grid-template-columns: 1fr; gap: 10px; }
           .photos-grid { grid-template-columns: 1fr 1fr; }
         }
       `}</style>
 
-      {/* ── Countdown bar ── */}
-      <div
-        style={{
-          background: "#F9F7FF",
-          borderBottom: "1px solid rgba(61,21,80,0.08)",
-          padding: "8px 20px",
-          display: "flex",
-          alignItems: "center",
-          gap: 16,
-          flexWrap: "wrap",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            gap: 14,
-            flexShrink: 0,
-          }}
-        >
-          {[
-            { n: "--", l: "Weeks" },
-            { n: "--", l: "Days" },
-            { n: "--", l: "Hours" },
-            { n: "--", l: "Mins" },
-          ].map(({ n, l }) => (
-            <div
-              key={l}
-              style={{ display: "flex", alignItems: "baseline", gap: 3 }}
-            >
-              <span
-                style={{
-                  fontSize: 18,
-                  fontWeight: 800,
-                  color: "#3D1550",
-                  fontVariantNumeric: "tabular-nums",
-                  lineHeight: 1,
-                  fontFamily: "Outfit, sans-serif",
-                }}
-              >
-                {n}
-              </span>
-              <span
-                style={{
-                  fontSize: 9,
-                  color: "rgba(61,21,80,0.4)",
-                  letterSpacing: "0.06em",
-                  marginBottom: 1,
-                }}
-              >
-                {l}
-              </span>
-            </div>
-          ))}
-        </div>
-        <span
-          className="cb-text"
-          style={{ color: "rgba(61,21,80,0.4)", fontSize: 12 }}
-        >
-          Event date to be announced
-        </span>
-      </div>
-
-      <Navbar navigate={navigate} />
-
       {/* ══ HERO ══ */}
-      <section style={{ background: "#ffffff", paddingTop: 68 }}>
-        <div
-          className="hero-section-inner"
-          style={{
-            maxWidth: 1240,
-            margin: "0 auto",
-            padding: "36px 32px 60px",
-          }}
-        >
-          {/* Brand badge */}
-          <div
-            className="animate-fade-up stagger-1"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              marginBottom: 18,
-            }}
-          >
-            <img
-              src={mssnLogo}
-              alt="MSSN logo"
-              style={{
-                width: 42,
-                height: 42,
-                objectFit: "contain",
-                borderRadius: 6,
-              }}
-            />
-            <div>
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 700,
-                  color: "#3D1550",
-                  fontFamily: "Outfit, sans-serif",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                MSSN UNILORIN
-              </div>
-              <div
-                style={{
-                  fontSize: 10,
-                  color: "#D4A24C",
-                  letterSpacing: "0.12em",
-                  fontWeight: 600,
-                }}
-              >
-                GRAND LUNCHEON 2026
-              </div>
-            </div>
-          </div>
-
-          {/* H1 */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              marginBottom: 6,
-            }}
-          >
-            <h1
-              className="animate-fade-up stagger-2"
-              style={{
-                fontFamily: "Outfit, sans-serif",
-                fontSize: "clamp(28px, 4.5vw, 54px)",
-                fontWeight: 800,
-                color: "#0F0A18",
-                lineHeight: 1.08,
-                margin: 0,
-                maxWidth: 600,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Experience The First
-              <br />
-              Grand Luncheon
-            </h1>
-            <div
-              style={{
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 6,
-                marginTop: 6,
-                cursor: "pointer",
-                userSelect: "none",
-                display: "none",
-              }}
-              className="animate-fade-in stagger-3"
-              onClick={() =>
-                document
-                  .getElementById("about-section")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  border: "1.5px solid rgba(26,26,46,0.2)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-                  <path
-                    d="M7,2 L7,12 M3,8 L7,12 L11,8"
-                    stroke="#3D1550"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <span
-                style={{
-                  fontSize: 9,
-                  color: "rgba(26,26,46,0.4)",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                SCROLL
-              </span>
-            </div>
-          </div>
-
-          <div
-            className="animate-fade-up stagger-2"
-            style={{
-              fontSize: 12,
-              color: "rgba(26,26,46,0.38)",
-              marginBottom: 24,
-            }}
-          >
-            Home &rsaquo; Register
-          </div>
-
-          {/* Two-column hero */}
-          <div className="hero-grid">
-            {/* LEFT */}
-            <div style={{ minWidth: 0 }}>
-              {/* Package tabs */}
-              <div
-                id="packages-section"
-                className="animate-fade-up stagger-3"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  marginBottom: 20,
-                  flexWrap: "wrap",
-                }}
-              >
-                {PACKAGES.map((p, i) => (
-                  <button
-                    key={p.name}
-                    onClick={() => setSelectedIdx(i)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      padding: "7px 14px",
-                      borderRadius: 24,
-                      border: `1.5px solid ${
-                        i === selectedIdx ? "#3D1550" : "rgba(26,26,46,0.14)"
-                      }`,
-                      background: i === selectedIdx ? "#3D1550" : "transparent",
-                      color:
-                        i === selectedIdx ? "#FDF8F0" : "rgba(26,26,46,0.5)",
-                      fontWeight: i === selectedIdx ? 600 : 400,
-                      fontSize: 12.5,
-                      cursor: "pointer",
-                      transition: "all 0.15s",
-                      minHeight: 36,
-                      fontFamily: "Manrope, sans-serif",
-                    }}
-                  >
-                    {i === selectedIdx && (
-                      <span
-                        style={{
-                          width: 5,
-                          height: 5,
-                          borderRadius: "50%",
-                          background: "#D4A24C",
-                          flexShrink: 0,
-                        }}
-                      />
-                    )}
-                    {p.name} Pass
-                  </button>
-                ))}
-              </div>
-
-              {/* Ticket */}
-              <div className="animate-fade-up stagger-3">
-                <TicketCard pkg={pkg} />
-              </div>
-
-              {/* Feature grid */}
-              <div className="feature-grid animate-fade-up stagger-4">
-                {FEATURES.map((f) => (
-                  <div
-                    key={f}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 8,
-                    }}
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 15 15"
-                      style={{ flexShrink: 0, marginTop: 2 }}
-                      aria-hidden="true"
-                    >
-                      <circle
-                        cx="7.5"
-                        cy="7.5"
-                        r="7"
-                        stroke="#D4A24C"
-                        strokeWidth="1"
-                        fill="rgba(212,162,76,0.1)"
-                      />
-                      <path
-                        d="M4.5,7.5 L6.5,9.5 L10.5,5.5"
-                        stroke="#D4A24C"
-                        strokeWidth="1.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <span
-                      style={{
-                        fontSize: 12,
-                        color: "#3a2d40",
-                        lineHeight: 1.45,
-                      }}
-                    >
-                      {f}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA */}
-              <div
-                className="animate-fade-up stagger-5"
-                style={{ marginTop: 28 }}
-              >
-                <button
-                  onClick={() => navigate("register")}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 10,
-                    padding: "12px 26px",
-                    borderRadius: 32,
-                    border: "1.5px solid rgba(26,26,46,0.2)",
-                    background: "transparent",
-                    color: "#1A1A2E",
-                    fontWeight: 500,
-                    fontSize: 14,
-                    cursor: "pointer",
-                    transition: "all 0.2s",
-                    fontFamily: "Manrope, sans-serif",
-                    minHeight: 46,
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.background = "#3D1550"
-                    e.currentTarget.style.color = "#FDF8F0"
-                    e.currentTarget.style.borderColor = "#3D1550"
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.background = "transparent"
-                    e.currentTarget.style.color = "#1A1A2E"
-                    e.currentTarget.style.borderColor = "rgba(26,26,46,0.2)"
-                  }}
-                >
-                  Register for the Grand Luncheon
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <circle
-                      cx="8"
-                      cy="8"
-                      r="7"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                    />
-                    <path
-                      d="M6,8 H10 M8,6 L10,8 L8,10"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            {/* RIGHT – price card (hidden on mobile via CSS) */}
-            <div className="hero-price-col animate-fade-up stagger-3">
-              <div style={{ marginBottom: 4 }}>
-                <span
-                  style={{
-                    fontFamily: "Outfit, sans-serif",
-                    fontSize: 38,
-                    fontWeight: 800,
-                    color: "#0F0A18",
-                    lineHeight: 1,
-                  }}
-                >
-                  {formatPrice(pkg.price)}
-                </span>
-                <span
-                  style={{
-                    fontSize: 12,
-                    color: "rgba(26,26,46,0.38)",
-                    marginLeft: 4,
-                  }}
-                >
-                  /ea
-                </span>
-              </div>
-              <div
-                style={{
-                  fontSize: 11,
-                  color: "#D4A24C",
-                  fontWeight: 600,
-                  marginBottom: 18,
-                }}
-              >
-                {getTierLabel(pkg)}
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 9,
-                  marginBottom: 20,
-                }}
-              >
-                {pkg.includes.map((item) => (
-                  <div
-                    key={item}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 8,
-                    }}
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 15 15"
-                      style={{ flexShrink: 0, marginTop: 2 }}
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M2.5,7.5 L6,11 L12.5,4"
-                        stroke="#D4A24C"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <span
-                      style={{
-                        fontSize: 12.5,
-                        color: "#3a2d40",
-                        lineHeight: 1.4,
-                        fontFamily: "Manrope, sans-serif",
-                      }}
-                    >
-                      {item}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={() => navigate("register")}
-                style={{
-                  width: "100%",
-                  padding: "12px 0",
-                  borderRadius: 10,
-                  border: "1.5px solid rgba(26,26,46,0.15)",
-                  background: "#ffffff",
-                  color: "#1A1A2E",
-                  fontWeight: 600,
-                  fontSize: 13,
-                  cursor: "pointer",
-                  transition: "all 0.15s",
-                  minHeight: 44,
-                  boxShadow: "0 2px 8px rgba(26,26,46,0.06)",
-                  fontFamily: "Manrope, sans-serif",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.background = "#3D1550"
-                  e.currentTarget.style.color = "#FDF8F0"
-                  e.currentTarget.style.borderColor = "#3D1550"
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.background = "#ffffff"
-                  e.currentTarget.style.color = "#1A1A2E"
-                  e.currentTarget.style.borderColor = "rgba(26,26,46,0.15)"
-                }}
-              >
-                Register Now
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection navigate={navigate} />
 
       {/* ══ DARK ABOUT CARD ══ */}
       <div style={{ padding: "0 16px", marginBottom: 0 }} id="about-section">
@@ -918,7 +198,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                 style={{
                   fontSize: 10,
                   fontWeight: 600,
-                  color: "#D4A24C",
+                  color: "#FFC153",
                   letterSpacing: "0.14em",
                   marginBottom: 12,
                   fontFamily: "Manrope, sans-serif",
@@ -964,7 +244,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                     width: 40,
                     height: 40,
                     borderRadius: "50%",
-                    background: isPlaying ? "#E8C784" : "#D4A24C",
+                    background: isPlaying ? "#E8C784" : "#FFC153",
                     color: "#3D1550",
                     display: "flex",
                     alignItems: "center",
@@ -978,7 +258,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   onMouseOut={(e) =>
                     (e.currentTarget.style.background = isPlaying
                       ? "#E8C784"
-                      : "#D4A24C")
+                      : "#FFC153")
                   }
                 >
                   {isPlaying ? (
@@ -1045,7 +325,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   onClick={() => skip(-10)}
                   style={ctrlBtnStyle}
                   onMouseOver={(e) =>
-                    (e.currentTarget.style.background = "rgba(212,162,76,0.22)")
+                    (e.currentTarget.style.background = "rgba(255,193,83,0.22)")
                   }
                   onMouseOut={(e) =>
                     (e.currentTarget.style.background =
@@ -1068,7 +348,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   onClick={stop}
                   style={ctrlBtnStyle}
                   onMouseOver={(e) =>
-                    (e.currentTarget.style.background = "rgba(212,162,76,0.22)")
+                    (e.currentTarget.style.background = "rgba(255,193,83,0.22)")
                   }
                   onMouseOut={(e) =>
                     (e.currentTarget.style.background =
@@ -1091,7 +371,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   onClick={() => skip(10)}
                   style={ctrlBtnStyle}
                   onMouseOver={(e) =>
-                    (e.currentTarget.style.background = "rgba(212,162,76,0.22)")
+                    (e.currentTarget.style.background = "rgba(255,193,83,0.22)")
                   }
                   onMouseOut={(e) =>
                     (e.currentTarget.style.background =
@@ -1140,7 +420,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   onChange={(e) => onSeek(Number(e.target.value))}
                   style={{
                     flex: 1,
-                    accentColor: "#D4A24C",
+                    accentColor: "#FFC153",
                     cursor: "pointer",
                     height: 4,
                   }}
@@ -1174,7 +454,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#D4A24C"
+                    stroke="#FFC153"
                     strokeWidth="1.5"
                   >
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -1194,7 +474,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#D4A24C"
+                    stroke="#FFC153"
                     strokeWidth="1.5"
                   >
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -1203,10 +483,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                 ),
                 title: "Curated Packages",
                 desc: "Choose from 4 tailored packages — each includes food and souvenirs with tiered perks.",
-                action: () =>
-                  document
-                    .getElementById("packages-section")
-                    ?.scrollIntoView({ behavior: "smooth" }),
+                action: () => navigate("register"),
               },
               {
                 icon: (
@@ -1215,7 +492,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#D4A24C"
+                    stroke="#FFC153"
                     strokeWidth="1.5"
                   >
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -1258,7 +535,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   style={{
                     background: "none",
                     border: "none",
-                    color: "#D4A24C",
+                    color: "#FFC153",
                     fontSize: 12.5,
                     fontWeight: 600,
                     cursor: "pointer",
@@ -1312,7 +589,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   width: 6,
                   height: 6,
                   borderRadius: "50%",
-                  background: "#D4A24C",
+                  background: "#FFC153",
                   flexShrink: 0,
                   marginTop: 7,
                 }}
@@ -1470,9 +747,9 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   boxShadow: "0 1px 4px rgba(61,21,80,0.06)",
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.borderColor = "#D4A24C"
+                  e.currentTarget.style.borderColor = "#FFC153"
                   e.currentTarget.style.boxShadow =
-                    "0 4px 12px rgba(212,162,76,0.15)"
+                    "0 4px 12px rgba(255,193,83,0.15)"
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.borderColor = "rgba(61,21,80,0.12)"
@@ -1485,7 +762,7 @@ export default function LandingPage({ navigate }: { navigate: NavigateFn }) {
                   height="14"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#D4A24C"
+                  stroke="#FFC153"
                   strokeWidth="2"
                   aria-hidden="true"
                 >

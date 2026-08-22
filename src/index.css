@@ -4,7 +4,7 @@
 :root {
   --purple-deep: #3D1550;
   --purple-royal: #5B2C74;
-  --gold: #D4A24C;
+  --gold: #FFC153;
   --gold-light: #E8C784;
   --cream: #F5EDE0;
   --off-white: #FFFFFF;
@@ -39,7 +39,7 @@ body {
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(212,162,76,0.35); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: rgba(255,193,83,0.35); border-radius: 3px; }
 
 /* ── Scroll-reveal animations ── */
 .scroll-reveal {

@@ -14,11 +14,11 @@ build/
 coverage/
 *.local
 
-# ── Environment ──
-.env
-.env.production
-.env.local
-.env.*.local
+# ── Environment & secrets ──
+.env*
+!.env.example
+*.pem
+*.key
 
 # ── Logs ──
 logs/
@@ -33,6 +33,7 @@ lerna-debug.log*
 # ── Caching / temp ──
 .cache/
 .vite/
+.vitest/
 .parcel-cache/
 .turbo/
 .eslintcache
@@ -43,22 +44,37 @@ vite.config.*.timestamp-*
 .vscode/*
 !.vscode/extensions.json
 .idea/
+.history/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 .DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
 Thumbs.db
+ehthumbs.db
 Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+nul
+
+# ── Backup / temp files ──
+*.bak
+*.orig
+*.tmp
+.tmp-*
 
 # ── Misc / tooling ──
 .claude-replay.*
-.tmp-*
 .netlify/
 .vercel/
+.wrangler/
+.clasp.json
 
 # ── Platform-managed agentplat state (Figma Make), not project source ──
 /.plugins/
 /.opencode-skills/
-nul 

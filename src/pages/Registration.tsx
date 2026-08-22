@@ -16,6 +16,36 @@ import unilorinCentralImage from "../imports/unilorin central.jpg"
 const GAS_ENDPOINT =
   "https://script.google.com/macros/s/AKfycbwiwnmocxxEDwlfiZ3c7SkelmfYeUtcvn38YDQCTiLHbz6VyM6hYxPK_UH7Gaxl_QRW/exec"
 
+// ── Receipt upload constraints (client-side first line of defense; the
+//    backend MUST re-validate type/size independently of the browser check). ──
+const MAX_RECEIPT_BYTES = 5 * 1024 * 1024 // 5 MB
+const RECEIPT_TYPES =
+  /^(image\/(jpeg|jpg|png|webp|heic|heif)|application\/pdf)$/
+
+/** Validates type + size of a chosen receipt file. Returns an error msg or null. */
+function validateReceiptFile(file: File | null): string | null {
+  if (!file) return null
+  if (!RECEIPT_TYPES.test(file.type))
+    return "Unsupported file type. Please upload a JPG, PNG, WEBP or PDF receipt."
+  if (file.size === 0)
+    return "That file appears to be empty. Please choose a valid receipt."
+  if (file.size > MAX_RECEIPT_BYTES)
+    return "File is too large. The maximum receipt size is 5 MB."
+  return null
+}
+
+/** Fast chunked File -> base64 (avoids per-byte String concatenation on large files). */
+async function fileToBase64(file: File): Promise<string> {
+  const buf = await file.arrayBuffer()
+  const bytes = new Uint8Array(buf)
+  const chunks: string[] = []
+  const CHUNK = 0x8000 // 32k chars per apply() call
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    chunks.push(String.fromCharCode(...bytes.subarray(i, i + CHUNK)))
+  }
+  return btoa(chunks.join(""))
+}
+
 // ── Package data (single source of truth) ──
 
 interface FormData {
@@ -275,6 +305,8 @@ function LeftPanel({
           key={i}
           src={im.url}
           alt={im.caption}
+          loading={i === 0 ? "eager" : "lazy"}
+          decoding="async"
           style={{
             position: "absolute",
             inset: 0,
@@ -336,7 +368,7 @@ function LeftPanel({
             <div
               style={{
                 fontSize: 9,
-                color: "#D4A24C",
+                color: "#FFC153",
                 fontFamily: "Manrope, sans-serif",
                 letterSpacing: "0.08em",
               }}
@@ -348,8 +380,8 @@ function LeftPanel({
         {pkg && (
           <div
             style={{
-              background: "rgba(212,162,76,0.22)",
-              border: "1px solid rgba(212,162,76,0.45)",
+              background: "rgba(255,193,83,0.22)",
+              border: "1px solid rgba(255,193,83,0.45)",
               borderRadius: 20,
               padding: "4px 12px",
               fontSize: 11,
@@ -382,7 +414,7 @@ function LeftPanel({
             cx="26"
             cy="26"
             r="21"
-            stroke="#D4A24C"
+            stroke="#FFC153"
             strokeWidth="3"
             fill="none"
             strokeDasharray={`${2 * Math.PI * 21}`}
@@ -419,13 +451,13 @@ function LeftPanel({
           style={{
             fontSize: 10,
             fontWeight: 600,
-            color: "#D4A24C",
+            color: "#FFC153",
             letterSpacing: "0.1em",
             marginBottom: 6,
             fontFamily: "Manrope, sans-serif",
           }}
         >
-          REGISTRATION NOW OPEN
+          REGISTRATION NOW OPEN!
         </div>
         <div
           style={{
@@ -463,7 +495,7 @@ function LeftPanel({
                 width: i === idx ? 22 : 7,
                 height: 7,
                 borderRadius: 4,
-                background: i === idx ? "#D4A24C" : "rgba(255,255,255,0.35)",
+                background: i === idx ? "#FFC153" : "rgba(255,255,255,0.35)",
                 border: "none",
                 cursor: "pointer",
                 transition: "all 0.35s",
@@ -539,7 +571,7 @@ function Step1({
                       width: 8,
                       height: 8,
                       borderRadius: "50%",
-                      background: "#D4A24C",
+                      background: "#FFC153",
                     }}
                   />
                 )}
@@ -589,8 +621,8 @@ function Step1({
                   style={{
                     fontSize: 10,
                     fontWeight: 600,
-                    color: "#D4A24C",
-                    background: "rgba(212,162,76,0.1)",
+                    color: "#FFC153",
+                    background: "rgba(255,193,83,0.1)",
                     borderRadius: 6,
                     padding: "2px 7px",
                     fontFamily: "Manrope, sans-serif",
@@ -671,7 +703,7 @@ function Step2({
                       width: 7,
                       height: 7,
                       borderRadius: "50%",
-                      background: "#D4A24C",
+                      background: "#FFC153",
                     }}
                   />
                 )}
@@ -873,8 +905,8 @@ function Step4({
       <div style={sectionSub}>Customise your Ikram package souvenir</div>
       <div
         style={{
-          background: "rgba(212,162,76,0.08)",
-          border: "1px solid rgba(212,162,76,0.25)",
+          background: "rgba(255,193,83,0.08)",
+          border: "1px solid rgba(255,193,83,0.25)",
           borderRadius: 10,
           padding: "12px 14px",
           marginBottom: 20,
@@ -1109,6 +1141,8 @@ function Step7({
   data: FormData
   setData: (d: Partial<FormData>) => void
 }) {
+  // Step-local error state for the receipt upload (validation feedback only).
+  const [receiptError, setReceiptError] = useState<string | null>(null)
   const pkg = getPackageByName(data.package)
   const amount = pkg ? formatPrice(pkg.price) : "—"
   return (
@@ -1122,7 +1156,7 @@ function Step7({
       <div
         style={{
           background: "#FFF8F0",
-          border: "1px solid rgba(212,162,76,0.3)",
+          border: "1px solid rgba(255,193,83,0.3)",
           borderRadius: 12,
           padding: "16px 18px",
           marginBottom: 20,
@@ -1228,9 +1262,14 @@ function Step7({
             type="file"
             accept="image/*,.pdf"
             style={{ display: "none" }}
-            onChange={(e) =>
-              setData({ receiptFile: e.target.files?.[0] ?? null })
-            }
+            onChange={(e) => {
+              const file = e.target.files?.[0] ?? null
+              const err = validateReceiptFile(file)
+              setReceiptError(err)
+              setData({ receiptFile: err ? null : file })
+              // Reset the input value so the same file can be re-selected after fixing.
+              e.target.value = ""
+            }}
           />
           {data.receiptFile ? (
             <div>
@@ -1277,6 +1316,18 @@ function Step7({
               >
                 JPG, PNG or PDF — click to browse
               </div>
+              {receiptError && (
+                <p
+                  style={{
+                    color: "#DC2626",
+                    fontSize: 12,
+                    fontFamily: "Manrope, sans-serif",
+                    marginTop: 8,
+                  }}
+                >
+                  {receiptError}
+                </p>
+              )}
             </div>
           )}
         </label>
@@ -1452,6 +1503,9 @@ export default function RegistrationPage({
         data.gender &&
         data.level
       )
+    if (step === 3) return !!data.ikramWantsCustom
+    if (step === 4) return !!data.joinAlumni
+    if (step === 5) return !!data.busDonate
     if (step === 6) return !!(data.receiptFile && data.payerName)
     if (step === 7) return data.confirmed
     return true
@@ -1481,13 +1535,16 @@ export default function RegistrationPage({
       let receiptFileName = ""
       let receiptMimeType = ""
       if (data.receiptFile) {
-        const buf = await data.receiptFile.arrayBuffer()
-        const bytes = new Uint8Array(buf)
-        let binary = ""
-        bytes.forEach((b) => (binary += String.fromCharCode(b)))
-        receiptBase64 = btoa(binary)
+        // Defensive re-validation (the onChange check is not a security boundary).
+        const receiptErr = validateReceiptFile(data.receiptFile)
+        if (receiptErr) {
+          setSubmitError(receiptErr)
+          setSubmitting(false)
+          return
+        }
         receiptFileName = data.receiptFile.name
         receiptMimeType = data.receiptFile.type || "application/octet-stream"
+        receiptBase64 = await fileToBase64(data.receiptFile)
       }
 
       // Exact key names expected by the Google Apps Script backend
@@ -1520,14 +1577,19 @@ export default function RegistrationPage({
         pledgeAmount: data.busAmount,
       }
 
-      // Debug: verify every field before sending
-      console.log("[MSSN] Submitting payload:", payload)
+      // NOTE: only a redacted, PII-free log — the payload carries phone, email
+      // and matric number, which must not be written to the browser console.
+      console.log("[MSSN] Submitting registration…")
 
+      const controller = new AbortController()
+      const abortTimeout = window.setTimeout(() => controller.abort(), 60000)
       const res = await fetch(GAS_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       })
+      window.clearTimeout(abortTimeout)
       const json = (await res.json()) as {
         success: boolean
         referenceId?: string
@@ -1549,10 +1611,14 @@ export default function RegistrationPage({
       })
     } catch (_err) {
       console.error("[MSSN] Submission error:", _err)
-      setSubmitError(
-        "Something went wrong. Please check your connection and try again.",
-      )
+      const isTimeout =
+        _err instanceof DOMException && _err.name === "AbortError"
       setSubmitting(false)
+      setSubmitError(
+        isTimeout
+          ? "The request timed out. Please check your connection and try again."
+          : "Something went wrong. Please check your connection and try again.",
+      )
     }
   }
 
@@ -1717,7 +1783,7 @@ export default function RegistrationPage({
                       height: 28,
                       borderRadius: "50%",
                       background: done
-                        ? "#D4A24C"
+                        ? "#FFC153"
                         : active
                           ? "#3D1550"
                           : "rgba(61,21,80,0.08)",
@@ -1762,7 +1828,7 @@ export default function RegistrationPage({
                         flex: 1,
                         height: 2,
                         borderRadius: 2,
-                        background: done ? "#D4A24C" : "rgba(61,21,80,0.1)",
+                        background: done ? "#FFC153" : "rgba(61,21,80,0.1)",
                         margin: "0 6px",
                         transition: "background 0.4s",
                       }}
@@ -1786,7 +1852,7 @@ export default function RegistrationPage({
               style={{
                 fontSize: 11,
                 fontWeight: 600,
-                color: "#D4A24C",
+                color: "#FFC153",
                 letterSpacing: "0.1em",
                 fontFamily: "Manrope, sans-serif",
               }}
@@ -1956,7 +2022,7 @@ export default function RegistrationPage({
                   borderRadius: 10,
                   border: "none",
                   background:
-                    data.confirmed && !submitting ? "#D4A24C" : "#D1D5DB",
+                    data.confirmed && !submitting ? "#FFC153" : "#D1D5DB",
                   color: data.confirmed && !submitting ? "#3D1550" : "#9CA3AF",
                   fontWeight: 700,
                   fontSize: 14,
